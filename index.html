@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ngForms</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="app.css">
+</head>
+
+<body ng-controller="appCtrl">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Simple Form Generator - AngularJS / Bootstrap</h2>
+        <p>
+          <strong>Base:(not required)</strong> This is used for when you're using an array, view model, or have nested properties. i.e. <em>vm.user.first, vm.user.last, ...</em>
+        </p>
+        <p>
+          <strong>Models:</strong> These are your object's properties...
+        </p>
+        <p>
+          <strong>Columns:</strong> Well, the amount of colums your forms will have.
+        </p>
+        <p class="bg-danger"><em>NOTE:</em> This only creates the form field structure, nothing fancy for now... maybe in the future</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-2">
+        <label>Base:</label>
+        <input type="text" class="form-control" ng-model="data.base" placeholder="vm or data or obj" ng-change="setMulti()" />
+      </div>
+      <div class="form-group col-md-8">
+        <label>Models:</label>
+        <input type="text" class="form-control" ng-model="data.inputs" placeholder="Comma delimited string. i.e.: user.first_name, user.email,..." ng-change="setMulti()" />
+      </div>
+      <div class="form-group col-md-1">
+        <label>Columns:</label>
+        <input type="number" min="1" max="4" class="form-control" ng-model="data.cols" ng-change="setMulti()" />
+      </div>
+      <div class="form-group col-md-1">
+        <label style="margin-top:30px">
+          <input type="checkbox" ng-model="data.inline" ng-change="setMulti()" />
+          Inline
+        </label>
+      </div>
+
+      <div class="col-md-12" ng-hide="!data.multiple.length">
+        <table class="table">
+          <tr>
+            <th>Model</th>
+            <th>Label</th>
+            <th>Type</th>
+          </tr>
+          <tr ng-repeat="i in data.multiple track by $index">
+            <td><input type="text" class="form-control" ng-model="i.model" ng-change="updateCode()" /></td>
+            <td><input type="text" class="form-control" ng-model="i.label" ng-change="updateCode()" /></td>
+            <td>
+              <select ng-model="i.type" class="form-control" ng-change="updateCode()">
+                <option value="text">Text</option>
+                <option value="password">Password</option>
+                <option value="checkbox">Checkbox</option>
+                <option value="radio">Radio</option>
+                <option value="textarea">Textarea</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="well well-clear">
+          <h4>HTML Preview</h4>
+          <div id="preview" ng-bind-html="data.code | trust"></div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="well well-clear">
+          <h4>HTML Code</h4>
+          <pre ng-hide="!data.multiple.length"><code>{{ data.code }}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src='//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.15.0/lodash.min.js'></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+  <script src="app.js"></script>
+
+</body>
+
+</html>
